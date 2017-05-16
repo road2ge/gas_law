@@ -1,5 +1,5 @@
 ########Gas Laws (Honors Chemistry)########
-
+from Tkinter import *
 def which_law(const):
     if const == "t":
         return "b"
@@ -90,7 +90,7 @@ else:
         pressure = input("Pressure in atm>")
     if not unknown == 'v':
         volume = input("Volume in liters>")
-    if not unknown == 'm'
+    if not unknown == 'm':
         mass_unit = raw_input("If you have moles, input y. If you have grams, input n>").lower()
         if mass_unit == 'y':
             mass_unit = True
