@@ -48,6 +48,7 @@ def charles(a1,b1,a2,t_v=False):
     else:
         b2 = a1 * a2 / b1
         print str(b2) + " liters is your new volume"
+
 cond_change = raw_input("Do conditions change? y/n>")
 if cond_change == 'y':
     cond_change = True
@@ -80,6 +81,7 @@ if not constant == 't':
             args2[0] = convert_c_k(args2[0])
 
 else:
+    # Gas law constant!!!!
     r = .082
     unknown = raw_input("Is your unknown P, V, Mass (M), or T>").lower()
     while unknown not in 'pvmt':
@@ -107,20 +109,24 @@ else:
             while temperature_unit not in 'cfk':
                 temperature_unit = raw_input("I don't understand.\nTemperature unit: C, F, or K>").lower()
         temperature = input("Now actual number for temperature>")
-        if not temperatureerature_unit == 'k':
-            if temperatureerature_unit == 'f':
+        if not temperature_unit == 'k':
+            if temperature_unit == 'f':
                 temperature = convert_f_k(temperature)
             else:
                 temperature = convert_c_k(temperature)
     if unknown == 'p':
+        # Solve for pressure. PV = nRT, so P = nRT/V
         print str(mass * r * temperature / volume) + " atm."
     elif unknown == 'v':
+        # Solve for volume. PV = nRT, so V = nRT/P
         print str(mass * r * temperature / pressure) + " Liters."
     elif unknown == 'm':
+        # Solve for moles. PV = nRT, so n = PV/RT
         print str(pressure * volume / (r*temperature)) + " moles, or alternatively"
         print str(mm * moles) + " grams."
     elif unknown == 't':
-        print str(pressure * volume / (r*mass)) + " Celsius."
+        # Solve for temperature. PV = nRT, so T = PV/nR
+        print str(pressure * volume / (mass*r)) + " Celsius."
 
         
 # Given T,V,P,T2,V2,P2
