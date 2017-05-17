@@ -1,6 +1,19 @@
 ########Gas Laws (Honors Chemistry)########
 from Tkinter import *
-def which_law(const):
+root = Tk()
+canvas = Canvas(root, height=900, width=5000, bg='white')
+# canvas.grid(column=1, row=0, rowspan=4, sticky=W)
+Label(root, text='If conditions change. Put u and c for unknown and constant.').grid(columnspan=5,column=0,padx=20)
+Label(root, text='Temperature (C):').grid(row=1)
+Label(root, text='Volume (L):').grid(row=2)
+Label(root, text='Pressure (atm):').grid(row=3)
+Label(root, text='Solution:').grid(row=4)
+
+Label(root, text='If conditions DO NOT change. Put u for unknown.').grid(columnspan=5,column=5,row=0)
+Label(root, text='Temperature (C):').grid(row=1,column=5)
+Label(root, text='Volume (L):').grid(row=2,column=5)
+Label(root, text='Pressure (atm):').grid(row=3,column=5)
+'''def which_law(const):
     if const == "t":
         return "b"
     elif const == 'v':
@@ -9,13 +22,13 @@ def which_law(const):
         return "c"
 
 def convert_c_k(temperature):
-    '''Convert Celsius to Kelvin'''
+    Convert Celsius to Kelvin
     try: 
         return float(temperature) + 273.15
     except:
         return temperature
 def convert_f_k(temperature):
-    '''Convert Farenheit to Kelvin'''
+    Convert Farenheit to Kelvin
     try: 
         return (float(temperature) * (5/9) + 32) + 273.15
     except:
@@ -149,4 +162,5 @@ if law == 'c':
         charles(float(args1[1]), float(args1[0]), float(args2[1]), True)
     elif args2[1] == 'u':
         # Unknown is V2, pass T2
-        charles(float(args1[1]), float(args1[0]), float(args2[0]))
+        charles(float(args1[1]), float(args1[0]), float(args2[0]))'''
+root.mainloop()
