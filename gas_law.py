@@ -1,19 +1,6 @@
 ########Gas Laws (Honors Chemistry)########
 from Tkinter import *
-root = Tk()
-canvas = Canvas(root, height=900, width=5000, bg='white')
-# canvas.grid(column=1, row=0, rowspan=4, sticky=W)
-Label(root, text='If conditions change. Put u and c for unknown and constant.').grid(columnspan=5,column=0,padx=20)
-Label(root, text='Temperature (C):').grid(row=1)
-Label(root, text='Volume (L):').grid(row=2)
-Label(root, text='Pressure (atm):').grid(row=3)
-Label(root, text='Solution:').grid(row=4)
-
-Label(root, text='If conditions DO NOT change. Put u for unknown.').grid(columnspan=5,column=5,row=0)
-Label(root, text='Temperature (C):').grid(row=1,column=5)
-Label(root, text='Volume (L):').grid(row=2,column=5)
-Label(root, text='Pressure (atm):').grid(row=3,column=5)
-'''def which_law(const):
+def which_law(const):
     if const == "t":
         return "b"
     elif const == 'v':
@@ -22,13 +9,13 @@ Label(root, text='Pressure (atm):').grid(row=3,column=5)
         return "c"
 
 def convert_c_k(temperature):
-    Convert Celsius to Kelvin
+    '''Convert Celsius to Kelvin'''
     try: 
         return float(temperature) + 273.15
     except:
         return temperature
 def convert_f_k(temperature):
-    Convert Farenheit to Kelvin
+    '''Convert Farenheit to Kelvin'''
     try: 
         return (float(temperature) * (5/9) + 32) + 273.15
     except:
@@ -61,15 +48,7 @@ def charles(a1,b1,a2,t_v=False):
     else:
         b2 = a1 * a2 / b1
         print str(b2) + " liters is your new volume"
-
-cond_change = raw_input("Do conditions change? y/n>")
-if cond_change == 'y':
-    cond_change = True
-elif cond_change == 'n':
-    cond_change = False
-else:
-    while not cond_change in 'yn':
-        cond_change = raw_input("I don't understand.\nDo conditions change? y/n>")
+'''
 if not cond_change:
     constant = raw_input("Is your constant T, V, or P>").lower()
     temperature_unit = "k"
@@ -163,4 +142,41 @@ if law == 'c':
     elif args2[1] == 'u':
         # Unknown is V2, pass T2
         charles(float(args1[1]), float(args1[0]), float(args2[0]))'''
+def solve2():
+    temp = float(eT2.get())
+    vol = float(eV2.get())
+    pres = float(eP2.get())
+    # do which law
+    # call it
+    # put box of solution
+
+root = Tk()
+canvas = Canvas(root, height=900, width=5000, bg='white')
+# canvas.grid(column=1, row=0, rowspan=4, sticky=W)
+Label(root, text='If conditions change. Put u and c for unknown and constant.').grid(columnspan=5,column=0,padx=20)
+Label(root, text='Temperature (C):').grid(row=1)
+Label(root, text='Volume (L):').grid(row=2)
+Label(root, text='Pressure (atm):').grid(row=3)
+Label(root, text='Solution:').grid(row=4)
+
+Label(root, text='If conditions DO NOT change. Put u for unknown.').grid(columnspan=5,column=5,row=0)
+Label(root, text='Temperature (C):').grid(row=1,column=5)
+Label(root, text='Volume (L):').grid(row=2,column=5)
+Label(root, text='Pressure (atm):').grid(row=3,column=5)
+
+eT1 = Entry(root)
+eT1.grid(row=1,column=1)
+eV1 = Entry(root)
+eV1.grid(row=2,column=1)
+eP1 = Entry(root)
+eP1.grid(row=3,column=1)
+eT2 = Entry(root)
+eT2.grid(row=1,column=6)
+eV2 = Entry(root)
+eV2.grid(row=2,column=6)
+eP2 = Entry(root)
+eP2.grid(row=3,column=6)
+b2 = Button(root, text = 'Solve', command=solve2)
+b2.grid(row=5, column = 3)
+
 root.mainloop()
