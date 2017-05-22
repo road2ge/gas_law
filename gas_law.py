@@ -52,17 +52,17 @@ def gas_law(p,v,n,t):
     r = .082
     if p == 'u':
         # Solve for pressure. PV = nRT, so P = nRT/V
-        return mass * r * temperature / volume
+        return n * r * t / v
     elif v == 'u':
         # Solve for volume. PV = nRT, so V = nRT/P
-        return mass * r * temperature / pressure
-    elif m == 'u':
+        return n * r * t / p
+    elif n == 'u':
         # Solve for moles. PV = nRT, so n = PV/RT
-        return pressure * volume / (r*temperature)
+        return p * v / (r*t)
         # print str(mm * moles) + " grams."
     elif t == 'u':
         # Solve for temperature. PV = nRT, so T = PV/nR
-        return pressure * volume / (mass*r)
+        return p * v / (n*r)
 
 '''
 if not cond_change:
@@ -159,19 +159,37 @@ if law == 'c':
         # Unknown is V2, pass T2
         charles(float(args1[1]), float(args1[0]), float(args2[0]))'''
 def solve2():
-    temp = float(eT1.get())
-    vol = float(eV1.get())
-    pres = float(eP1.get())
-    mass = float(eM1.get())
+    temp = eT1.get()
+    vol = eV1.get()
+    pres = eP1.get()
+    mass = eM1.get()
+    try:
+        temp = float(temp)
+    except:
+        pass
+    try:
+        vol = float(vol)
+    except:
+        pass
+    try:
+        pres = float(pres)
+    except:
+        pass
+    try:
+        mass = float(mass)
+    except:
+        pass
+
     if temp == 'u':
         unknown = 't'
     elif vol == 'u':
         unknown = 'v'
     elif pres == 'u':
-        unknown == 'p'
+        unknown = 'p'
     elif mass == 'u':
-        unknown == 'm'
+        unknown = 'm'
     solution = gas_law(pres,vol,mass,temp)
+    solutionVar.set(solution)
     
 
 root = Tk()
@@ -181,7 +199,7 @@ Label(root, text='If conditions change. Put u and c for unknown and constant.').
 Label(root, text='Temperature (C):').grid(row=1)
 Label(root, text='Volume (L):').grid(row=2)
 Label(root, text='Pressure (atm):').grid(row=3)
-Label(root, text='Solution:').grid(row=4)
+Label(root, text='Mass:').grid(row=4)
 
 Label(root, text='If conditions DO NOT change. Put u for unknown.').grid(columnspan=5,column=5,row=0)
 Label(root, text='Temperature (C):').grid(row=1,column=5)
@@ -207,6 +225,6 @@ eM2.grid(row=4,column=6)
 b2 = Button(root, text = 'Solve', command=solve2)
 b2.grid(row=5, column = 3)
 solutionVar = StringVar()
-solution = Label(root).grid(row=6,column=3,textvariable=solutionVar)
+solution = Label(root,textvariable=solutionVar).grid(row=6,column=3)
 
 root.mainloop()
