@@ -48,6 +48,22 @@ def charles(a1,b1,a2,t_v=False):
     else:
         b2 = a1 * a2 / b1
         print str(b2) + " liters is your new volume"
+def gas_law(p,v,n,t):
+    r = .082
+    if p == 'u':
+        # Solve for pressure. PV = nRT, so P = nRT/V
+        return mass * r * temperature / volume
+    elif v == 'u':
+        # Solve for volume. PV = nRT, so V = nRT/P
+        return mass * r * temperature / pressure
+    elif m == 'u':
+        # Solve for moles. PV = nRT, so n = PV/RT
+        return pressure * volume / (r*temperature)
+        # print str(mm * moles) + " grams."
+    elif t == 'u':
+        # Solve for temperature. PV = nRT, so T = PV/nR
+        return pressure * volume / (mass*r)
+
 '''
 if not cond_change:
     constant = raw_input("Is your constant T, V, or P>").lower()
@@ -143,12 +159,20 @@ if law == 'c':
         # Unknown is V2, pass T2
         charles(float(args1[1]), float(args1[0]), float(args2[0]))'''
 def solve2():
-    temp = float(eT2.get())
-    vol = float(eV2.get())
-    pres = float(eP2.get())
-    # do which law
-    # call it
-    # put box of solution
+    temp = float(eT1.get())
+    vol = float(eV1.get())
+    pres = float(eP1.get())
+    mass = float(eM1.get())
+    if temp == 'u':
+        unknown = 't'
+    elif vol == 'u':
+        unknown = 'v'
+    elif pres == 'u':
+        unknown == 'p'
+    elif mass == 'u':
+        unknown == 'm'
+    solution = gas_law(pres,vol,mass,temp)
+    
 
 root = Tk()
 canvas = Canvas(root, height=900, width=5000, bg='white')
@@ -170,13 +194,19 @@ eV1 = Entry(root)
 eV1.grid(row=2,column=1)
 eP1 = Entry(root)
 eP1.grid(row=3,column=1)
+eM1 = Entry(root)
+eM1.grid(row=4,column=1)
 eT2 = Entry(root)
 eT2.grid(row=1,column=6)
 eV2 = Entry(root)
 eV2.grid(row=2,column=6)
 eP2 = Entry(root)
 eP2.grid(row=3,column=6)
+eM2 = Entry(root)
+eM2.grid(row=4,column=6)
 b2 = Button(root, text = 'Solve', command=solve2)
 b2.grid(row=5, column = 3)
+solutionVar = StringVar()
+solution = Label(root).grid(row=6,column=3,textvariable=solutionVar)
 
 root.mainloop()
