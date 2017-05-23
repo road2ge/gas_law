@@ -1,5 +1,40 @@
 ########Gas Laws (Honors Chemistry)########
 from Tkinter import *
+root = Tk()
+canvas = Canvas(root, height=900, width=5000, bg='white')
+# canvas.grid(column=1, row=0, rowspan=4, sticky=W)
+Label(root, text='If conditions change, fill left and right. Otherwise, fill just left. Put u and c for unknown and constant. Only put unknowns on the right.').grid(column=3)
+Label(root, text='Temperature (C):').grid(row=1)
+Label(root, text='Volume (L):').grid(row=2)
+Label(root, text='Pressure (atm):').grid(row=3)
+Label(root, text='Moles:').grid(row=4)
+
+# Label(root, text='If conditions DO NOT change. Put u for unknown.').grid(columnspan=5,column=5,row=0)
+Label(root, text='Temperature (C):').grid(row=1,column=5)
+Label(root, text='Volume (L):').grid(row=2,column=5)
+Label(root, text='Pressure (atm):').grid(row=3,column=5)
+Label(root, text='Moles:').grid(row=4,column=5)
+
+eT1 = Entry(root)
+eT1.grid(row=1,column=1)
+eV1 = Entry(root)
+eV1.grid(row=2,column=1)
+eP1 = Entry(root)
+eP1.grid(row=3,column=1)
+eM1 = Entry(root)
+eM1.grid(row=4,column=1)
+eT2 = Entry(root)
+eT2.grid(row=1,column=6)
+eV2 = Entry(root)
+eV2.grid(row=2,column=6)
+eP2 = Entry(root)
+eP2.grid(row=3,column=6)
+eM2 = Entry(root)
+eM2.grid(row=4,column=6)
+b2 = Button(root, text = 'Solve', command=callSolver)
+b2.grid(row=5, column=3)
+solutionVar = StringVar()
+solution = Label(root,textvariable=solutionVar).grid(row=6,column=3)
 def which_law(const):
     if const == "t":
         return "b"
@@ -22,32 +57,35 @@ def convert_f_k(temperature):
         return temperature
 
 # Gas law is PV = nRT. n is constant.
-def boyles(a1,b1,a2):
+def boyles(a1,b1,a2,v_p=True):
     # temperature is constant. Find b2.
     # a1 * b1 = a2 * b2
     prod = a1 * b1
     b2 = prod / a2
     # TODO: PROCESS A RET STRING
-    print b2
+    if v_p:
+        return str(b2) + "Liters"
+    else:
+        return str(b2) + "atm"
 def gay_lussacs(a1,b1,a2,t_p=False):
     # Volume is constant. Find b2.
     # p/t = p/t
     if t_p:
         b2 = b1 * a2 / a1
-        print str(b2) + " Kelvin is your new temperature"
+        return str(b2) + " Kelvin"
     else:
         b2 = a1 * a2 / b1
-        print str(b2) + " atm is your new pressure"
+        return str(b2) + " atm"
 def charles(a1,b1,a2,t_v=False):
     # Pressure is constant. Find b2.
     # v/t = v2/t2
     # a1 / b1 = a2 / b2
     if t_v:
         b2 = b1 * a2 / a1
-        print str(b2) + " Kelvin is your new temperature"
+        return str(b2) + " Kelvin"
     else:
         b2 = a1 * a2 / b1
-        print str(b2) + " liters is your new volume"
+        return str(b2) + " Liters"
 def gas_law(p,v,n,t):
     r = .082
     if p == 'u':
@@ -190,41 +228,68 @@ def solve2():
         unknown = 'm'
     solution = gas_law(pres,vol,mass,temp)
     solutionVar.set(solution)
-    
+def solve():
+    # get args
+    # do which_law
+    # call the law
+    # set solution var
+    # t,v,p
+    t1 = eT1.get()
+    v1 = eV1.get()
+    p1 = eP1.get()
+    t2 = eT2.get()
+    v2 = eV2.get()
+    p2 = eP2.get()
+    try:
+        t1 = float(t1)
+    except:
+        if t1 == 'c':
+            law = 'b'
+        if t1 == 'u':
+            unknown = 't1'
+    try:
+        v1 = float(v1)
+    except:
+        pass
+    try:
+        p1 = float(p1)
+    except:
+        pass
+    try:
+        t2 = float(t2)
+    except:
+        pass
+    try:
+        v2 = float(v2)
+    except:
+        pass
+    try:
+        p2 = float(p2)
+    except:
+        pass
+    args1 = [t1,v1,p1]
+    args2 = [t2,v2,p2]
 
-root = Tk()
-canvas = Canvas(root, height=900, width=5000, bg='white')
-# canvas.grid(column=1, row=0, rowspan=4, sticky=W)
-Label(root, text='If conditions change. Put u and c for unknown and constant.').grid(columnspan=5,column=0,padx=20)
-Label(root, text='Temperature (C):').grid(row=1)
-Label(root, text='Volume (L):').grid(row=2)
-Label(root, text='Pressure (atm):').grid(row=3)
-Label(root, text='Mass:').grid(row=4)
+    if law == 'b':
+        if args2[1] == 'u':
+            solutionVar.set(boyles(float(args1[1]), float(args1[2]),float(args2[2])))
+        elif args2[2] == 'u':
+            solutionVar.set(boyles(float(args1[1]), float(args1[2]),float(args2[1]),False))
+    if law == 'g':
+        if args2[0] =='u':
+            # Unknown is T2, pass P2
+            solutionVar.set(gay_lussacs(float(args1[2]), float(args1[0]), float(args2[2]), True))
+        elif args2[2] == 'u':
+            # Unknown is P2, pass T2
+            solutionVar.set(gay_lussacs(float(args1[2]), float(args1[0]), float(args2[0])))
+    if law == 'c':
+        if args2[0] == 'u':
+            # Unknown is T2, pass V2
+            charles(float(args1[1]), float(args1[0]), float(args2[1]), True)
+        elif args2[1] == 'u':
+            # Unknown is V2, pass T2
+            charles(float(args1[1]), float(args1[0]), float(args2[0]))
 
-Label(root, text='If conditions DO NOT change. Put u for unknown.').grid(columnspan=5,column=5,row=0)
-Label(root, text='Temperature (C):').grid(row=1,column=5)
-Label(root, text='Volume (L):').grid(row=2,column=5)
-Label(root, text='Pressure (atm):').grid(row=3,column=5)
 
-eT1 = Entry(root)
-eT1.grid(row=1,column=1)
-eV1 = Entry(root)
-eV1.grid(row=2,column=1)
-eP1 = Entry(root)
-eP1.grid(row=3,column=1)
-eM1 = Entry(root)
-eM1.grid(row=4,column=1)
-eT2 = Entry(root)
-eT2.grid(row=1,column=6)
-eV2 = Entry(root)
-eV2.grid(row=2,column=6)
-eP2 = Entry(root)
-eP2.grid(row=3,column=6)
-eM2 = Entry(root)
-eM2.grid(row=4,column=6)
-b2 = Button(root, text = 'Solve', command=solve2)
-b2.grid(row=5, column = 3)
-solutionVar = StringVar()
-solution = Label(root,textvariable=solutionVar).grid(row=6,column=3)
 
 root.mainloop()
