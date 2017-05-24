@@ -4,13 +4,13 @@ root = Tk()
 canvas = Canvas(root, height=900, width=5000, bg='white')
 # canvas.grid(column=1, row=0, rowspan=4, sticky=W)
 Label(root, text='If conditions change, fill left and right. Otherwise, fill just left. Put u and c for unknown and constant. Only put unknowns on the right.').grid(column=3)
-Label(root, text='Temperature (C):').grid(row=1)
+Label(root, text='Temperature (K):').grid(row=1)
 Label(root, text='Volume (L):').grid(row=2)
 Label(root, text='Pressure (atm):').grid(row=3)
 Label(root, text='Moles:').grid(row=4)
 
 # Label(root, text='If conditions DO NOT change. Put u for unknown.').grid(columnspan=5,column=5,row=0)
-Label(root, text='Temperature (C):').grid(row=1,column=5)
+Label(root, text='Temperature (K):').grid(row=1,column=5)
 Label(root, text='Volume (L):').grid(row=2,column=5)
 Label(root, text='Pressure (atm):').grid(row=3,column=5)
 Label(root, text='Moles:').grid(row=4,column=5)
@@ -31,10 +31,7 @@ eP2 = Entry(root)
 eP2.grid(row=3,column=6)
 eM2 = Entry(root)
 eM2.grid(row=4,column=6)
-b2 = Button(root, text = 'Solve', command=callSolver)
-b2.grid(row=5, column=3)
-solutionVar = StringVar()
-solution = Label(root,textvariable=solutionVar).grid(row=6,column=3)
+
 def which_law(const):
     if const == "t":
         return "b"
@@ -229,11 +226,6 @@ def solve2():
     solution = gas_law(pres,vol,mass,temp)
     solutionVar.set(solution)
 def solve():
-    # get args
-    # do which_law
-    # call the law
-    # set solution var
-    # t,v,p
     t1 = eT1.get()
     v1 = eV1.get()
     p1 = eP1.get()
@@ -245,28 +237,31 @@ def solve():
     except:
         if t1 == 'c':
             law = 'b'
-        if t1 == 'u':
-            unknown = 't1'
     try:
         v1 = float(v1)
     except:
-        pass
+        if v1 == 'c':
+            law = 'g'
     try:
         p1 = float(p1)
     except:
-        pass
+        if p1 == 'c':
+            law = 'c'
     try:
         t2 = float(t2)
     except:
-        pass
+        if t2 == 'c':
+            law = 'b'
     try:
         v2 = float(v2)
     except:
-        pass
+        if v2 == 'c':
+            law == 'g'
     try:
         p2 = float(p2)
     except:
-        pass
+        if p2 == 'c':
+            law = 'c'
     args1 = [t1,v1,p1]
     args2 = [t2,v2,p2]
 
@@ -285,11 +280,29 @@ def solve():
     if law == 'c':
         if args2[0] == 'u':
             # Unknown is T2, pass V2
-            charles(float(args1[1]), float(args1[0]), float(args2[1]), True)
+            solutionVar.set(charles(float(args1[1]), float(args1[0]), float(args2[1]), True))
         elif args2[1] == 'u':
             # Unknown is V2, pass T2
-            charles(float(args1[1]), float(args1[0]), float(args2[0]))
-
-
-
+            solutionVar.set(charles(float(args1[1]), float(args1[0]), float(args2[0])))
+def callSolver():
+    if eT2.get() == '':
+        solve2()
+    else:
+        solve()
+def clear():
+    
+    eT1.delete(0,END)
+    eT2.delete(0,END)
+    eP1.delete(0,END)
+    eP2.delete(0,END)
+    eV1.delete(0,END)
+    eV2.delete(0,END)
+    eM1.delete(0,END)
+    eM2.delete(0,END)
+    solutionVar.set('Cleared!')
+b2 = Button(root, text = 'Solve', command=callSolver)
+b2.grid(row=5, column=3)
+solutionVar = StringVar()
+solution = Label(root,textvariable=solutionVar).grid(row=6,column=3)
+bClear = Button(root, text='Clear', command = clear).grid(row=4,column=3)
 root.mainloop()
