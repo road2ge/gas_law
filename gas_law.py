@@ -31,6 +31,26 @@ eP2 = Entry(root)
 eP2.grid(row=3,column=6)
 eM2 = Entry(root)
 eM2.grid(row=4,column=6)
+tempUnit = StringVar()
+units = {'K', 'C', 'F'}
+tempUnit.set('K')
+Label(root, text='Choose your unit to convert to Kelvin.').grid(row=6, column=3)
+unitSelector = OptionMenu(root,tempUnit,*units).grid(row=6,column=4)
+eTempConvert = Entry(root)
+eTempConvert.grid(row=7,column=3)
+convertedVar = StringVar()
+Label(root, textvariable=convertedVar).grid(row=9,column=3)
+def converter():
+    unit = tempUnit.lower()
+    amount = eTempConvert.get()
+    if unit == 'k':
+        convertedVar.set(str(amount) + " K")
+    if unit == 'c':
+        convertedVar.set(str(convert_c_k(amount)) + " K")
+    if unit == 'f':
+        convertedVar.set(str(convert_f_k(amount)) + " K")
+convertButton = Button(root, command=converter,text='Convert').grid(row=7,column=3)
+
 
 def which_law(const):
     if const == "t":
